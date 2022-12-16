@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MultiplayerTennis
+namespace MultiplayerTennis.Core
 {
     public class BallSpawner : MonoBehaviour
     {

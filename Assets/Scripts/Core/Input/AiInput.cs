@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace MultiplayerTennis
+namespace MultiplayerTennis.Core.Input
 {
     public class AiInput : PointFollowInput
     { 

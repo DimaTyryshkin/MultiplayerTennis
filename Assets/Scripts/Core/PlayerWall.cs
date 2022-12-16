@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace MultiplayerTennis
+namespace MultiplayerTennis.Core
 {
     public class PlayerWall : MonoBehaviour
     {

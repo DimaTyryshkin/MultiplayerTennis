@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace MultiplayerTennis
+namespace MultiplayerTennis.Core
 {
     public class TennisRacquetMovement : MonoBehaviour
     {

@@ -2,7 +2,7 @@
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace MultiplayerTennis
+namespace MultiplayerTennis.Gui
 {
     public class EndGamePanel : MonoBehaviour
     {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace MultiplayerTennis
+namespace MultiplayerTennis.Core.Input
 {
     public class KeyboardPlayerInput : MonoBehaviour
     {
@@ -8,7 +8,7 @@ namespace MultiplayerTennis
 
         void Update()
         {
-            float input = Input.GetAxisRaw("Horizontal");
+            float input = UnityEngine.Input.GetAxisRaw("Horizontal"); 
             tennisRacquet.Input(tennisRacquet.transform.position + tennisRacquet.Right * input);
         }
     }

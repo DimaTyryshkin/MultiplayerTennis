@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MultiplayerTennis
+namespace MultiplayerTennis.Core
 {
     public class Ball : MonoBehaviour
     { 

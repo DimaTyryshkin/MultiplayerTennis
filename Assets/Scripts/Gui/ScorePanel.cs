@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace MultiplayerTennis
+namespace MultiplayerTennis.Gui
 {
     public class ScorePanel : MonoBehaviour
     {

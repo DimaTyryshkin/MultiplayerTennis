@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
+using MultiplayerTennis.Core;
+using MultiplayerTennis.Core.Input;
 
 namespace MultiplayerTennis
 {
