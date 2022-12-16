@@ -1,11 +1,8 @@
 {
-    "name": "MultiplayerTennis",
+    "name": "MultiplayerTennis.Core.Input",
     "rootNamespace": "",
     "references": [
-        "GUID:d9ccbe37e21486f4fbe3d970ff7205ee",
-        "GUID:eb6bb496877355048a775e057871d8f0",
-        "GUID:6d0747c78d8528841ab7cdc4a0df562c",
-        "GUID:2869cc71f066e7348b938a33c5c71d44"
+        "GUID:d9ccbe37e21486f4fbe3d970ff7205ee"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

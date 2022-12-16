@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 
 namespace MultiplayerTennis.Core
@@ -8,29 +7,34 @@ namespace MultiplayerTennis.Core
         [SerializeField] Transform forwardProvider;
         [SerializeField] float acceleration;
         [SerializeField] float maxSpeed;
-        [SerializeField] float width;
         [SerializeField] Transform viewRoot;
         [SerializeField] InfiniteWall[] leftAndRightLevelsWalls;
 
+        
+        float width;
         Vector2 velocity;
         Vector2 targetPosition;
 
-        public float Width => width;
+        public float Width
+        {
+            get => width;
+            set
+            {
+                width = value; 
+                Vector3 localScale = viewRoot.localScale;
+                localScale.x = width;
+                viewRoot.localScale = localScale;
+            }
+        }
+
         public Vector3 Forward => forwardProvider.forward;
         public Vector3 Right => forwardProvider.right;
+
 
         void Update()
         {
             Move();
             CollideWalls();
-        }
-
-        void OnValidate()
-        {
-            Undo.RecordObject(viewRoot, "scale");
-            Vector3 localScale = viewRoot.localScale;
-            localScale.x = width;
-            viewRoot.localScale = localScale;
         }
 
         public void Input(Vector2 targetPosition)

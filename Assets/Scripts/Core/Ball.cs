@@ -13,10 +13,9 @@ namespace MultiplayerTennis.Core
         [SerializeField] InfiniteWall[] walls;
         [SerializeField] TennisRacquetCollider[] tennisRacquetColliders;
 
-        [Header("Debug")] [SerializeField] bool isDebug;
+        [Header("Debug")] 
+        [SerializeField] bool isDebug;
 
-
-        float acceleration;
         Vector2 velocity;
         Vector3 lastCollidePoint;
         Vector3 lastCollideDir;
@@ -25,6 +24,15 @@ namespace MultiplayerTennis.Core
 
         public event UnityAction<Ball,GameObject> Collide;
 
+        public float ActualSpeed
+        {
+            get => velocity.magnitude;
+            set => velocity = velocity.normalized * value;
+        }
+
+        public float Acceleration { get; set; }
+
+        public float Radius => radius;
 
         void Start()
         {
@@ -39,7 +47,7 @@ namespace MultiplayerTennis.Core
 
         void Update()
         {
-            Vector2 accelerationVector = velocity.normalized * acceleration;
+            Vector2 accelerationVector = velocity.normalized * Acceleration;
             velocity += accelerationVector * Time.deltaTime;
             transform.position += (Vector3)velocity * Time.deltaTime;
             CollideTennisRacquet();
@@ -63,12 +71,7 @@ namespace MultiplayerTennis.Core
         {
             this.velocity = velocity;
         }
-        
-        public void SetAcceleration(float acceleration)
-        {
-            this.acceleration = acceleration;
-        }
-
+         
         void CollideWall()
         {
             Vector2 pos = transform.position;

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 namespace MultiplayerTennis.Core
@@ -7,13 +8,12 @@ namespace MultiplayerTennis.Core
     {
         [SerializeField] MeshRenderer[] wallsMeshRenderers;
         [SerializeField] Color hitColor;
+        [SerializeField] GameObject[] walls;
         
         public void OnBallCollide(Ball ball, GameObject go)
         {
-            if (go.GetComponentInParent<PlayerWall>())
-            {
+            if (walls.Contains(go))
                 StartCoroutine(HitEffectCoroutine());
-            }
         }
         
         IEnumerator HitEffectCoroutine()
