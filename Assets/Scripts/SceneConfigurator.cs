@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using MultiplayerTennis.Core;
+using MultiplayerTennis.Core.Bonuses;
 using MultiplayerTennis.Core.Input;
 
 namespace MultiplayerTennis
@@ -12,14 +13,27 @@ namespace MultiplayerTennis
         [SerializeField] HitEffect hitEffect;
         [SerializeField] GameMode gameMode;
         [SerializeField] Canvas canvas;
+        [SerializeField] BonusSystem bonusSystem;
         
         [SerializeField] TennisRacquetMovement[] allRacquet;
+
+        [SerializeField] float racquetWidth;
         
 
         IEnumerator Start()
         {
             canvas.gameObject.SetActive(true);
-            spawner.BallSpawned += ball => aiInput.SetBall(ball);
+            
+            foreach (TennisRacquetMovement racquet in allRacquet)
+                racquet.Width = racquetWidth;
+            
+            bonusSystem.SetRacquets(allRacquet);
+            
+            spawner.BallSpawned += ball =>
+            {
+                aiInput.SetBall(ball);
+                bonusSystem.SetBall(ball);
+            };
 
             spawner.BallSpawned += ball =>  
                 ball.Collide += hitEffect.OnBallCollide;;
@@ -35,6 +49,7 @@ namespace MultiplayerTennis
             yield return null;
 
             gameMode.StartGame();
+            bonusSystem.SpawnBonusWithDelay();
         }
     }
 }

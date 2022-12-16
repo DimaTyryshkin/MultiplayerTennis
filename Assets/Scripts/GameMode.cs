@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using UnityEngine.Events;
 using MultiplayerTennis.Core;
 
@@ -10,6 +11,7 @@ namespace MultiplayerTennis
         
         [Space]
         [SerializeField] BallSpawner ballSpawner;
+        [SerializeField] TeamMarker[] teamWalls;
 
         int topPlayerScore;
         int botPlayerScore;
@@ -39,12 +41,12 @@ namespace MultiplayerTennis
 
         void OnBallCollide(Ball ball, GameObject go)
         {
-            var playerWall = go.GetComponentInParent<PlayerWall>();
-            if (playerWall)
+            var playerWall = go.GetComponentInParent<TeamMarker>();
+            if (playerWall && teamWalls.Contains(playerWall))
             {
                 Destroy(ball.gameObject);
 
-                if (playerWall.isTopWall)
+                if (playerWall.Team == Team.Top)
                     botPlayerScore++;
                 else
                     topPlayerScore++;

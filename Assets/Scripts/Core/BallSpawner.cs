@@ -10,14 +10,12 @@ namespace MultiplayerTennis.Core
         [SerializeField] float startSpeed;
         [SerializeField] float ballAcceleration;
 
-        [Space] 
-        [SerializeField] 
-        Transform forwardProvider;
+        [Space] [SerializeField] Transform forwardProvider;
         [SerializeField] Ball ballPrefab;
-        
+
 
         [CanBeNull] public event UnityAction<Ball> BallSpawned;
-        
+
 
         void Start()
         {
@@ -42,15 +40,15 @@ namespace MultiplayerTennis.Core
             StartCoroutine(LaunchBall(newBall, velocity));
             return newBall;
         }
- 
+
         IEnumerator LaunchBall(Ball ball, Vector2 speed)
         {
             ball.SetVelocity(Vector2.zero);
-            ball.SetAcceleration(0);
+            ball.Acceleration = 0;
             yield return new WaitForSeconds(1);
-            
+
             ball.SetVelocity(speed);
-            ball.SetAcceleration(ballAcceleration);
-        } 
+            ball.Acceleration = ballAcceleration;
+        }
     }
 }
