@@ -9,13 +9,13 @@
         {
             this.racquetMovement = racquetMovement;
             originWidth = racquetMovement.Width;
-            racquetMovement.Width *= factor;
+            racquetMovement.RpcSetWidth(originWidth* factor);
             StartTimer(time);
         }
 
         protected override void ResetEffect()
         {
-            racquetMovement.Width = originWidth;
+            racquetMovement.RpcSetWidth(originWidth);
         } 
     }
 }

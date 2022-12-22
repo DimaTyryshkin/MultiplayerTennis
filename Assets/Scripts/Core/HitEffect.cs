@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace MultiplayerTennis.Core
 {
-    public class HitEffect : MonoBehaviour
+    public class HitEffect : NetworkBehaviour
     {
         [SerializeField] MeshRenderer[] wallsMeshRenderers;
         [SerializeField] Color hitColor;
@@ -13,9 +14,15 @@ namespace MultiplayerTennis.Core
         public void OnBallCollide(Ball ball, GameObject go)
         {
             if (walls.Contains(go))
-                StartCoroutine(HitEffectCoroutine());
+                RpcPlayEffect22();
         }
-        
+
+        [ClientRpc]
+        void RpcPlayEffect22()
+        {
+            StartCoroutine(HitEffectCoroutine());
+        }
+
         IEnumerator HitEffectCoroutine()
         {
             var oldColor = wallsMeshRenderers[0].material.color;

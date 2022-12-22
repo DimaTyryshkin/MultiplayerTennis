@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace MultiplayerTennis.Core
 {
-    public class TennisRacquetMovement : MonoBehaviour
+    public class TennisRacquetMovement : NetworkBehaviour
     {
         [SerializeField] Transform forwardProvider;
         [SerializeField] float acceleration;
@@ -17,29 +19,40 @@ namespace MultiplayerTennis.Core
 
         public float Width
         {
-            get => width;
-            set
-            {
-                width = value; 
-                Vector3 localScale = viewRoot.localScale;
-                localScale.x = width;
-                viewRoot.localScale = localScale;
-            }
+            get => width; 
         }
 
         public Vector3 Forward => forwardProvider.forward;
         public Vector3 Right => forwardProvider.right;
 
+        void Start()
+        {
+            targetPosition = transform.position;
+        }
 
         void Update()
         {
-            Move();
-            CollideWalls();
+            if(isServer)
+            {
+                Move();
+                CollideWalls();
+            }
         }
 
         public void Input(Vector2 targetPosition)
         {
+            //targetPosition.y = transform.position.y;
             this.targetPosition = targetPosition;
+            
+        }
+
+        [ClientRpc]
+        public void RpcSetWidth(float width)
+        {
+            this.width = width; 
+            Vector3 localScale = viewRoot.localScale;
+            localScale.x = width;
+            viewRoot.localScale = localScale;
         }
 
         void Move()

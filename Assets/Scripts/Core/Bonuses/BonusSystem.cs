@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Networking;
 using Random = UnityEngine.Random;
 
 namespace MultiplayerTennis.Core.Bonuses
 {
-    public class BonusSystem : MonoBehaviour
+    public class BonusSystem : NetworkBehaviour
     {
         [SerializeField] float bonusRadius;
         [SerializeField] float spawnDelay;
@@ -26,13 +25,7 @@ namespace MultiplayerTennis.Core.Bonuses
         List<BonusOnBoard> bonusesOnBoard;
         Dictionary<Team,TennisRacquetMovement> teamToRacquet;
 
-
-        void Start()
-        {
-            foreach (var bonus in bonusPrefabs)
-                bonus.gameObject.SetActive(false);
-        }
-
+        [ServerCallback]
         void Update()
         {
             if(!ball)
@@ -93,7 +86,15 @@ namespace MultiplayerTennis.Core.Bonuses
                     lastCollideTeam = teamMarker.Team;
             }
         }
-  
+
+        public void DestroyAllBonuses()
+        {
+            foreach (var bonus in bonusesOnBoard)
+                Destroy(bonus.gameObject);
+            
+            bonusesOnBoard.Clear();
+        }
+
         IEnumerator SpawnTimer(float delay)
         {
             yield return new WaitForSeconds(delay);
@@ -115,6 +116,7 @@ namespace MultiplayerTennis.Core.Bonuses
 
             BonusOnBoard newBonus = Instantiate(bonusPrefab, position, Quaternion.identity);
             newBonus.gameObject.SetActive(true);
+            NetworkServer.Spawn(newBonus.gameObject);
             bonusesOnBoard.Add(newBonus);
         }
 

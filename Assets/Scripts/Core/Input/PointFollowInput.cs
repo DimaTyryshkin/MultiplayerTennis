@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
 namespace MultiplayerTennis.Core.Input
 {
-    public abstract class PointFollowInput : MonoBehaviour
+    public abstract class PointFollowInput : NetworkBehaviour
     {
         [SerializeField] TennisRacquetMovement tennisRacquet;
 
@@ -11,17 +12,20 @@ namespace MultiplayerTennis.Core.Input
 
         void Update()
         {
-            Vector2 pos = tennisRacquet.transform.position;
-                
-            if (PointAvailable)
+            if(isServer)
             {
-                Vector2 dirToBall = Point - pos;
-                Vector2 input = Vector3.Project(dirToBall, tennisRacquet.Right);
-                tennisRacquet.Input(pos + input);
-            }
-            else
-            {
-                tennisRacquet.Input(pos);
+                Vector2 pos = tennisRacquet.transform.position;
+
+                if (PointAvailable)
+                {
+                    Vector2 dirToBall = Point - pos;
+                    Vector2 input = Vector3.Project(dirToBall, tennisRacquet.Right);
+                    tennisRacquet.Input(pos + input);
+                }
+                else
+                {
+                    tennisRacquet.Input(pos);
+                }
             }
         }
     }

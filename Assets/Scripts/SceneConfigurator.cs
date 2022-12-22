@@ -1,55 +1,79 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using MultiplayerTennis.Core;
 using MultiplayerTennis.Core.Bonuses;
 using MultiplayerTennis.Core.Input;
+using MultiplayerTennis.DebugTools;
+using UnityEngine.Networking;
 
 namespace MultiplayerTennis
 {
-    public class SceneConfigurator : MonoBehaviour
+    public class SceneConfigurator : NetworkBehaviour
     {
         [SerializeField] BallSpawner spawner;
         [SerializeField] AiInput aiInput;
         [SerializeField] HitEffect hitEffect;
         [SerializeField] GameMode gameMode;
-        [SerializeField] Canvas canvas;
+        [SerializeField] Canvas gameCanvas;
         [SerializeField] BonusSystem bonusSystem;
+        [SerializeField] NetworkConfigurator networkConfigurator;
         
-        [SerializeField] TennisRacquetMovement[] allRacquet;
-
+        [SerializeField] TennisRacquetMovement serverRacquet;
+        [SerializeField] TennisRacquetMovement clientRacquet;
         [SerializeField] float racquetWidth;
         
+        TennisRacquetMovement[] allRacquet;
+ 
+        void Start()
+        { 
+            allRacquet = new[] { serverRacquet, clientRacquet };
+            
+            gameCanvas.gameObject.SetActive(true);
+            networkConfigurator.NetworkReady += StartGame;
+            networkConfigurator.InitNetwork();
+        }
 
-        IEnumerator Start()
+        void StartGame()
         {
-            canvas.gameObject.SetActive(true);
+            LobbyPresenter.isMatchmakingEnable = false; //Удачно подцеписиль к матчу и больше не будем искать игру
             
-            foreach (TennisRacquetMovement racquet in allRacquet)
-                racquet.Width = racquetWidth;
+            gameCanvas.gameObject.SetActive(true);
             
-            bonusSystem.SetRacquets(allRacquet);
-            
-            spawner.BallSpawned += ball =>
+            if(isServer)
             {
-                aiInput.SetBall(ball);
-                bonusSystem.SetBall(ball);
-            };
+                foreach (TennisRacquetMovement racquet in allRacquet)
+                    racquet.RpcSetWidth(racquetWidth);
 
-            spawner.BallSpawned += ball =>  
-                ball.Collide += hitEffect.OnBallCollide;;
-
+                bonusSystem.SetRacquets(allRacquet);
+                
+                spawner.BallSpawned += ball =>
+                {
+                    aiInput.SetBall(ball);
+                    bonusSystem.SetBall(ball);
+                };
+                
+                spawner.BallSpawned += ball =>  
+                    ball.Collide += hitEffect.OnBallCollide;
+            }
+            
             gameMode.GameEnd += () =>
             {
                 foreach (TennisRacquetMovement racquet in allRacquet)
                     racquet.gameObject.SetActive(false);
+                
+                if(isServer)
+                    bonusSystem.DestroyAllBonuses();
             };
 
-            yield return null;
-            yield return null;
-            yield return null;
-
-            gameMode.StartGame();
-            bonusSystem.SpawnBonusWithDelay();
+            if (isServer)
+            {
+                gameMode.StartTtmerElapsed += () =>
+                { 
+                    bonusSystem.SpawnBonusWithDelay();
+                };
+                gameMode.RpcGameStarted();
+            }
         }
     }
 }

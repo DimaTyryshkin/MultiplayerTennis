@@ -1,9 +1,7 @@
 {
-    "name": "MultiplayerTennis.Core.Bonuses",
+    "name": "MultiplayerTennis.DebugTools",
     "rootNamespace": "",
-    "references": [
-        "GUID:d9ccbe37e21486f4fbe3d970ff7205ee"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

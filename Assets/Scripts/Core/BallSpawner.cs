@@ -2,6 +2,7 @@
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Networking;
 
 namespace MultiplayerTennis.Core
 {
@@ -10,32 +11,31 @@ namespace MultiplayerTennis.Core
         [SerializeField] float startSpeed;
         [SerializeField] float ballAcceleration;
 
-        [Space] [SerializeField] Transform forwardProvider;
+        [Space] 
+        [SerializeField] Transform forwardProvider;
         [SerializeField] Ball ballPrefab;
+        [SerializeField] InfiniteWall[] levelWalls;
+        [SerializeField] TennisRacquetCollider[] tennisRacquetColliders;
 
 
         [CanBeNull] public event UnityAction<Ball> BallSpawned;
 
-
-        void Start()
-        {
-            ballPrefab.gameObject.SetActive(false);
-
-        }
-
+ 
         public Ball SpawnBall()
         {
             Ball newBall = Instantiate(ballPrefab, transform.position, Quaternion.identity);
             newBall.gameObject.SetActive(true);
+            NetworkServer.Spawn(newBall.gameObject);
 
             Vector2 velocity = Vector2.zero;
             while (velocity == Vector2.zero)
             {
                 velocity = Random.insideUnitCircle.normalized * startSpeed;
-                if (Vector2.Dot(forwardProvider.forward, velocity) < 0.1)
+                if (Mathf.Abs(Vector2.Dot(forwardProvider.forward, velocity)) < 0.1f)
                     velocity = Vector2.zero;
             }
 
+            newBall.Init(levelWalls, tennisRacquetColliders);
             BallSpawned?.Invoke(newBall);
             StartCoroutine(LaunchBall(newBall, velocity));
             return newBall;
