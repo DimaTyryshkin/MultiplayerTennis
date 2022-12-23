@@ -1,0 +1,16 @@
+{
+    "name": "MultiplayerTennis.Core.Bonuses",
+    "rootNamespace": "",
+    "references": [
+        "GUID:d9ccbe37e21486f4fbe3d970ff7205ee"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
