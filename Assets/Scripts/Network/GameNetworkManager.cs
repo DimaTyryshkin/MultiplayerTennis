@@ -11,7 +11,7 @@ namespace MultiplayerTennis
         public int PlayersCount;
 
         public event UnityAction<GameNetworkPlayer> ServerAddPlayer;
-         
+
         public static GameNetworkManager Inst
         {
             get
@@ -19,7 +19,7 @@ namespace MultiplayerTennis
                 if (!inst)
                     inst = FindObjectOfType<GameNetworkManager>();
 
-                
+
                 return inst;
             }
         }
@@ -27,6 +27,11 @@ namespace MultiplayerTennis
         public IEnumerable<GameNetworkPlayer> GetAllPlayers()
         {
             return FindObjectsOfType<GameNetworkPlayer>(); // Тут, конечно, можно поумнее получать игроков. Но пока сойдет и так.
+        }
+
+        public void Reset()
+        {
+            PlayersCount = 0;
         }
 
         public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
@@ -46,11 +51,11 @@ namespace MultiplayerTennis
 
         public void Disconnect()
         {
-            if(NetworkServer.active )
-                StopHost();
-            
-            if(NetworkClient.active)
+            if (NetworkClient.active)
                 StopClient();
+
+            if (NetworkServer.active)
+                StopHost();
         }
     }
 }

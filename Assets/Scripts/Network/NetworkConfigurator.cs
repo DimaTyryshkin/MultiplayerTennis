@@ -17,6 +17,7 @@ namespace MultiplayerTennis
 
         public void InitNetwork()
         {
+            
             waitForNetworkCanvas.gameObject.SetActive(true);
 
             if (isServer)

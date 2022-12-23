@@ -15,13 +15,12 @@ namespace MultiplayerTennis.Gui
 
         void Start()
         {
-            restartButton.gameObject.SetActive(false);
             restartButton.onClick.AddListener(OnClickRestart);
-            StartCoroutine(ShowButtonWithDelay());
         }
         
         IEnumerator ShowButtonWithDelay()
         {
+            restartButton.gameObject.SetActive(false);
             yield return new WaitForSeconds(showButtonDelay);
             restartButton.gameObject.SetActive(true);
         } 
@@ -34,6 +33,7 @@ namespace MultiplayerTennis.Gui
         public void Draw(string msg)
         {
             msgText.text = msg;
+            StartCoroutine(ShowButtonWithDelay());
         }
     }
 }

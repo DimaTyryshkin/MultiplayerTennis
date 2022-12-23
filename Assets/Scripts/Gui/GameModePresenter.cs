@@ -3,7 +3,7 @@ using UnityEngine;
 using MultiplayerTennis.Gui;
 using UnityEngine.UI;
 
-namespace MultiplayerTennis
+namespace MultiplayerTennis.Gui
 {
     public class GameModePresenter : MonoBehaviour
     {
@@ -74,7 +74,15 @@ namespace MultiplayerTennis
             bool isLocalPlayerWinner = !(isBotWinner ^ isLocalPlayerIsBot);
             string msg = isLocalPlayerWinner ? "Победа" : "Проигрыш";
             endGamePanel.Draw(msg);
-            endGamePanel.ClickRestart += () => GameNetworkManager.Inst.Disconnect();
+            endGamePanel.ClickRestart += () =>
+            {
+                GameNetworkManager.Inst.Disconnect();
+                #if !UNITRY_EDITOR
+                // ClientRPC багуют при перезагрузке сцены. Поэтому тут такой костыль.
+                System.Diagnostics.Process.Start(Application.dataPath.Replace("_Data", ".exe"));
+                Application.Quit();
+                #endif
+            };
         }
     }
 }

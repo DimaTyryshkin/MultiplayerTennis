@@ -36,7 +36,7 @@ namespace MultiplayerTennis
 
         void StartGame()
         {
-            LobbyPresenter.isMatchmakingEnable = false; //Удачно подцеписиль к матчу и больше не будем искать игру
+            AutoMatchmaking.isMatchmakingEnable = false; //Удачно подцеписиль к матчу и больше не будем искать игру
             
             gameCanvas.gameObject.SetActive(true);
             

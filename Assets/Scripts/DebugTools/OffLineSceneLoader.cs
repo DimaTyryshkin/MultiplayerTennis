@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace MultiplayerTennis
+namespace MultiplayerTennis.DebugTools
 {
     public class OffLineSceneLoader : MonoBehaviour
     {
